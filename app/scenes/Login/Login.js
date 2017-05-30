@@ -3,12 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
+import { Link } from 'react-router-native';
 import {
-  Container,
-  Content,
-  Form,
   Item,
   Input,Label,
   Button
@@ -23,7 +22,7 @@ class Login extends Component {
         </View>
         <View style={styles.inputWrapper}>
           <Item fixedLabel>
-            <Label style={{color: '#fff'}}>Username</Label>
+            <Label style={{color: '#fff'}}>Email</Label>
             <Input />
           </Item>
           <Item fixedLabel last>
@@ -35,6 +34,13 @@ class Login extends Component {
               <Text>SIGN IN</Text>
             </Button>
           </View>
+          <TouchableOpacity>
+            <View style={styles.signUpTextWrapper}>
+              <Text style={{color: '#cecece'}}>
+                Dont have an account? <Text style={{color: '#fff'}}><Link to='/SignUp'>Sign up</Link></Text>
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -65,6 +71,10 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#fff'
+  },
+  signUpTextWrapper: {
+    alignItems: 'center',
+    marginTop: 110
   }
 });
 
