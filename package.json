@@ -7,7 +7,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "history": "^4.6.1",
     "native-base": "^2.1.4",
+    "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-router-native": "^4.1.1"

@@ -9,7 +9,8 @@ import {
 import { Link } from 'react-router-native';
 import {
   Item,
-  Input,Label,
+  Input,
+  Label,
   Button
 } from 'native-base';
 
@@ -36,9 +37,9 @@ class Login extends Component {
           </View>
           <TouchableOpacity>
             <View style={styles.signUpTextWrapper}>
-              <Text style={{color: '#cecece'}}>
-                Dont have an account? <Text style={{color: '#fff'}}><Link to='/SignUp'>Sign up</Link></Text>
-              </Text>
+              <Link to="/SignUp">
+                <Text style={{color: '#fff'}}>Sign Up</Text>
+              </Link>
             </View>
           </TouchableOpacity>
         </View>
