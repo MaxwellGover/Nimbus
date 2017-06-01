@@ -11,7 +11,7 @@ import {
   Input,
   Button
 } from 'native-base';
-import createUser from '~/redux/modules/authentication';
+import { createUser } from '~/redux/modules/authentication';
 
 class SignUp extends Component {
   static propTypes = {
