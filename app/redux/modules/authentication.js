@@ -3,6 +3,7 @@ const NOT_AUTHED = 'NOT_AUTHED';
 const IS_AUTHED = 'IS_AUTHED';
 
 import { fbAuth, db } from '~/config/firebase';
+import { Actions } from 'react-native-router-flux';
 
 function authenticating () {
   return {
@@ -41,7 +42,9 @@ export function createUser (userData) {
         displayName: userData.displayName,
         uid: user.uid
       })
+
       dispatch(isAuthed());
+      Actions.home()
     }).catch((error) => {
       console.warn('Error in createUser callback', error)
     });
@@ -54,7 +57,6 @@ const initialState = {
 };
 
 export default function authentication (state = initialState, action) {
-  console.log(action)
   switch (action.type) {
     case AUTHENTICATING :
       return {

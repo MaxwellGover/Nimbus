@@ -7,6 +7,7 @@ import { Login } from '~/scenes/Login';
 import { SignUp } from '~/scenes/SignUp';
 import { PreSplash } from '~/scenes/PreSplash';
 import { SplashContainer } from '~/scenes/Splash';
+import { HomeContainer } from '~/scenes/Home';
 
 class App extends Component {
   static propTypes = {
@@ -14,7 +15,7 @@ class App extends Component {
     isAuthenticating: PropTypes.bool.isRequired
   }
   componentDidMount () {
-    
+
   }
   render () {
     return (
@@ -37,6 +38,12 @@ class App extends Component {
             key="signUp"
             component={SignUp}
             title="Sign Up"
+            hideNavBar={false}
+          />
+          <Scene
+            key="home"
+            component={HomeContainer}
+            title="Home"
             hideNavBar={false}
           />
         </Scene>
