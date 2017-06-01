@@ -11,10 +11,22 @@ import {
   View
 } from 'react-native';
 import App from '~/components/App';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import * as reducers from './redux';
+// import devTools from 'remote-redux-devtools';
+
+const store = createStore(
+  combineReducers(reducers),
+  applyMiddleware(thunk)
+)
 
 const nimbus = () => {
   return (
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   );
 }
 
