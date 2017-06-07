@@ -35,7 +35,7 @@ class SignUp extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.helpTextWrapper}>
-          <Text>Some nice helpful text</Text>
+          <Text>Sign up</Text>
         </View>
         <View>
           <Item>

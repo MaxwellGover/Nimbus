@@ -5,21 +5,44 @@ const IS_AUTHED = 'IS_AUTHED';
 import { fbAuth, db } from '~/config/firebase';
 import { Actions } from 'react-native-router-flux';
 
-function authenticating () {
+export function authenticating () {
   return {
     type: AUTHENTICATING
   }
 }
 
-function notAuthed () {
+export function notAuthed () {
   return {
     type: NOT_AUTHED
   }
 }
 
-function isAuthed () {
+export function isAuthed (uid) {
   return {
-    type: IS_AUTHED
+    type: IS_AUTHED,
+    uid
+  }
+}
+
+export function loginUser (credentials) {
+  return function (dispatch, getState) {
+    dispatch(authenticating());
+
+    const email = credentials.email;
+    const password = credentials.password;
+
+    fbAuth.signInWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    }).then(() => {
+      const user = fbAuth.currentUser;
+      dispatch(isAuthed(user.uid));
+      Actions.home();
+    }).catch((error) => {
+      console.warn('Error in createUser callback', error)
+    });
   }
 }
 
@@ -43,7 +66,7 @@ export function createUser (userData) {
         uid: user.uid
       })
 
-      dispatch(isAuthed());
+      dispatch(isAuthed(user.uid));
       Actions.home()
     }).catch((error) => {
       console.warn('Error in createUser callback', error)
@@ -71,7 +94,8 @@ export default function authentication (state = initialState, action) {
       case IS_AUTHED :
         return {
           isAuthenticating: false,
-          isAuthed: true
+          isAuthed: true,
+          uid: action.uid
         }
     default :
       return state

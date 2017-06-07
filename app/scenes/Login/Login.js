@@ -13,35 +13,52 @@ import {
   Label,
   Button
 } from 'native-base';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '~/redux/modules/authentication';
 
 class Login extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired
+  }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+  handleSubmit = () => {
+    this.props.dispatch(loginUser(this.state));
+  }
   render () {
     return (
       <View style={styles.container}>
-        <View style={styles.logoWrapper}>
-          <Image style={styles.logo} source={require('../../images/logo.png')}/>
+        <View>
+          <Item>
+            <Input
+              placeholder="Email address"
+              onChangeText={(email) => this.setState({email})}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+            />
+          </Item>
+          <Item>
+            <Input
+              placeholder="Password"
+              secureTextEntry={true}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              onChangeText={(password) => this.setState({password})}/>
+          </Item>
         </View>
-        <View style={styles.inputWrapper}>
-          <Item fixedLabel>
-            <Label style={{color: '#fff'}}>Email</Label>
-            <Input />
-          </Item>
-          <Item fixedLabel last>
-            <Label style={{color: '#fff'}}>Password</Label>
-            <Input />
-          </Item>
-          <View style={styles.buttonWrapper}>
-            <Button light block>
-              <Text>SIGN IN</Text>
-            </Button>
-          </View>
-          <TouchableOpacity>
-            <View style={styles.signUpTextWrapper}>
-              <Link to="/SignUp">
-                <Text style={{color: '#fff'}}>Sign Up</Text>
-              </Link>
-            </View>
-          </TouchableOpacity>
+        <View style={styles.buttonWrapper}>
+          <Button block light onPress={this.handleSubmit}>
+            <Text>
+              Sign In
+            </Text>
+          </Button>
         </View>
       </View>
     );
@@ -51,8 +68,9 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#000'
+    padding: 10,
+    justifyContent: 'center',
+    backgroundColor: '#fff'
   },
   logoWrapper: {
     flex: 1,
@@ -72,11 +90,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#fff'
-  },
-  signUpTextWrapper: {
-    alignItems: 'center',
-    marginTop: 110
   }
 });
 
-export default Login;
+export default connect()(Login);

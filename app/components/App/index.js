@@ -1,49 +1,86 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Router, Scene } from 'react-native-router-flux';
+import { Router, Scene, Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { fbAuth } from '~/config/firebase';
+import { isAuthed, notAuthed } from '~/redux/modules/authentication';
 import { Login } from '~/scenes/Login';
 import { SignUp } from '~/scenes/SignUp';
 import { PreSplash } from '~/scenes/PreSplash';
 import { SplashContainer } from '~/scenes/Splash';
 import { HomeContainer } from '~/scenes/Home';
+import { SongListContainer } from '~/components/SongList';
 
 class App extends Component {
   static propTypes = {
-    isAuthed: PropTypes.bool.isRequired,
-    isAuthenticating: PropTypes.bool.isRequired
+    isAuthenticating: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isAuthed: PropTypes.bool.isRequired
+  }
+  signOut = () => {
+    fbAuth.signOut().then(() => {
+      this.props.dispatch(notAuthed());
+      Actions.splash();
+    }).catch(function(error) {
+      console.warn(error);
+      const user = fbAuth.currentUser;
+      this.props.dispatch(isAuthed(user.uid))
+    });
   }
   componentDidMount () {
-
+    fbAuth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user.uid)
+        this.props.dispatch(isAuthed(user.uid))
+        Actions.home();
+      } else {
+        this.props.dispatch(notAuthed())
+        Actions.splash();
+      }
+    });
   }
   render () {
     return (
       <Router>
         <Scene key="root">
           <Scene
+            key="pre"
+            component={PreSplash}
+            title="Pre Splash"
+            hideNavBar={true}
+            initial={true}
+            />
+          <Scene
             key="splash"
             component={SplashContainer}
             title="Splash"
-            initial={true}
             hideNavBar={true}
           />
           <Scene
             key="login"
             component={Login}
             title="Login"
-            hideNavBar={false}
+            hideNavBar={true}
           />
           <Scene
             key="signUp"
             component={SignUp}
             title="Sign Up"
-            hideNavBar={false}
+            hideNavBar={true}
           />
           <Scene
             key="home"
             component={HomeContainer}
-            title="Home"
+            title="Nimbus"
+            hideNavBar={false}
+            onRight={this.signOut}
+            rightTitle='Sign out'
+          />
+          <Scene
+            key="songList"
+            component={SongListContainer}
+            title="Available Songs"
             hideNavBar={false}
           />
         </Scene>
@@ -54,8 +91,8 @@ class App extends Component {
 
 function mapStateToProps ({ authentication }) {
   return {
-    isAuthed: authentication.isAuthed,
-    isAuthenticating: authentication.isAuthenticating
+    isAuthenticating: authentication.isAuthenticating,
+    isAuthed: authentication.isAuthed
   }
 }
 
