@@ -25,7 +25,12 @@ function FooterTabs (props) {
         >
           <Icon name="camera" />
         </Button>
-        <Button active={props.activeTab === 'profile' ? true : false} onPress={() => props.dispatch(props.changeActiveTab('profile'))}>
+        <Button
+          active={props.activeTab === 'profile' ? true : false}
+          onPress={() => {
+            props.dispatch(props.changeActiveTab('profile'));
+            Actions.collection();
+          }}>
           <Icon name="person"/>
         </Button>
       </FooterTab>

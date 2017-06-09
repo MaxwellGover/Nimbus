@@ -6,22 +6,30 @@ import PropTypes from 'prop-types';
 function SongList (props) {
   return (
     <View style={styles.container}>
-      {console.log(props.availableSongs)}
-      {props.availableSongs.map((song) => {
-        return <Text>{song.songName}</Text>
-      })}
+      <ScrollView>
+        {props.availableSongs.map((song, index) => {
+          return <ListItem
+            style={styles.listItem}
+            key={index}
+            onPress={() => props.dispatch(props.saveSongPath(song.downloadURL))}>
+              <Text>{song.songName}</Text>
+          </ListItem>
+        })}
+      </ScrollView>
     </View>
   );
 }
 
 SongListPropTypes = {
-  availableSongs: PropTypes.array.isRequired
+  availableSongs: PropTypes.array.isRequired,
+  saveSongPath: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 140
+    marginTop: 70
   }
 })
 

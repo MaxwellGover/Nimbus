@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { db } from '~/config/firebase';
+import { saveSongPath } from '~/redux/modules/preview';
 import SongList from './SongList';
 
 class SongListContainer extends Component {
@@ -20,19 +21,23 @@ class SongListContainer extends Component {
     const ref = db.ref(`users/${this.props.uid}/availableTracks/`);
 
     ref.once('value', (snapshot) => {
+      var songArray = []
       snapshot.forEach((childSnapshot) => {
         const childKey = childSnapshot.key;
-        const songs = childSnapshot.val();
+        const song = childSnapshot.val();
 
-        this.setState(() => {
-          availableSongs: this.state.availableSongs.push(songs);
-        })
+        songArray.push(song);
       });
+      this.setState({ availableSongs: [...songArray] })
     });
   }
   render () {
     return (
-      <SongList availableSongs={this.state.availableSongs}/>
+      <SongList
+        availableSongs={this.state.availableSongs}
+        saveSongPath={saveSongPath}
+        dispatch={this.props.dispatch}
+      />
     );
   }
 }

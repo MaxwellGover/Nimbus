@@ -11,6 +11,8 @@ import { PreSplash } from '~/scenes/PreSplash';
 import { SplashContainer } from '~/scenes/Splash';
 import { HomeContainer } from '~/scenes/Home';
 import { SongListContainer } from '~/components/SongList';
+import { CollectionContainer } from '~/components/Collection';
+import { FooterTabsContainer } from '~/components/FooterTabs';
 
 class App extends Component {
   static propTypes = {
@@ -82,6 +84,14 @@ class App extends Component {
             component={SongListContainer}
             title="Available Songs"
             hideNavBar={false}
+          />
+          <Scene
+            key="collection"
+            component={CollectionContainer}
+            title="Collection"
+            hideNavBar={false}
+            onRight={() => {}}
+            rightTitle='Profile'
           />
         </Scene>
       </Router>
