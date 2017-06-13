@@ -13,6 +13,7 @@ import { HomeContainer } from '~/scenes/Home';
 import { SongListContainer } from '~/components/SongList';
 import { CollectionContainer } from '~/components/Collection';
 import { FooterTabsContainer } from '~/components/FooterTabs';
+import { NimbusCamera } from '~/components/Camera';
 
 class App extends Component {
   static propTypes = {
@@ -92,6 +93,12 @@ class App extends Component {
             hideNavBar={false}
             onRight={() => {}}
             rightTitle='Profile'
+          />
+          <Scene
+            key="camera"
+            component={NimbusCamera}
+            title="Collection"
+            hideNavBar={true}
           />
         </Scene>
       </Router>
