@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   View
 } from 'react-native';
 import Camera from 'react-native-camera';
@@ -12,8 +13,10 @@ class NimbusCamera extends Component {
   constructor(props) {
     super(props);
 
+    this.camera = null;
+
     this.state = {
-      timeRemaining: 30,
+      timer: 10,
       isRecording: false,
       limitReached: false,
       controls: {
@@ -31,23 +34,62 @@ class NimbusCamera extends Component {
             this.camera = cam;
           }}
           style={styles.preview}
+          type={this.state.controls.type}
+          orientation={this.state.controls.orientation}
+          flashMode={this.state.flashMode}
           aspect={Camera.constants.Aspect.fill}
           captureAudio={true}
           captureMode={Camera.constants.CaptureMode.video}
           captureTarget={Camera.constants.CaptureTarget.disk}
           keepAwake={true}>
-          <Text style={styles.capture} onPress={this.startRecording.bind(this)}>[CAPTURE]</Text>
+          <Text>{this.state.timer}</Text>
+          <Text>{this.state.isRecording}</Text>
+          <TouchableOpacity onPress={this.startRecording.bind(this)}>
+            <Text style={styles.capture}>[CAPTURE]</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.stopRecording.bind(this)}>
+            <Text>[STOP RECORDING]</Text>
+          </TouchableOpacity>
         </Camera>
       </View>
     );
   }
 
-  startRecording () {
-    const options = {};
-    //options.location = ...
-    this.camera.capture({metadata: options})
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
+  startRecording = () => {
+    if (this.camera) {
+      this.setState({
+        isRecording: true
+      });
+      this.camera.capture({mode: Camera.constants.CaptureMode.video})
+        .then((data) => {
+          console.log(data)
+          
+        })
+        .catch(err => console.error(err))
+
+      this.interval = setInterval(() => {
+        const timer = this.state.timer
+        this.setState({
+          timer: timer - 1
+        })
+        if (timer === 0) {
+          window.clearInterval(this.interval);
+          this.stopRecording();
+          this.setState({
+            isRecording: false,
+            timer: 10
+          })
+          // Push to preview
+        }
+        console.log(timer)
+      }, 1000);
+    }
+  }
+
+  stopRecording = () => {
+    if (this.camera) {
+      this.camera.stopCapture();
+    }
   }
 }
 

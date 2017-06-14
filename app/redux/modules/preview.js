@@ -1,18 +1,18 @@
 const SAVE_SONG_PATH = 'SAVE_SONG_PATH';
 const SAVE_VIDEO_PATH = 'SAVE_VIDEO_PATH';
 
-export function saveSongPath (url) {
-  console.log(url)
+export function saveSongPath (songPath) {
+  console.log(songPath)
   return {
     type: SAVE_SONG_PATH,
-    url
+    songPath
   }
 };
 
-export function saveVideoPath (url) {
+export function saveVideoPath (videoPath) {
   return {
     type: SAVE_VIDEO_PATH,
-    url
+    videoPath
   }
 };
 
@@ -26,12 +26,12 @@ export default function preview (state = initialState, action) {
     case SAVE_SONG_PATH:
       return {
         ...state,
-        songPath: action.url
+        songPath: action.songPath
       }
     case SAVE_VIDEO_PATH:
       return {
         ...state,
-        videoPath: action.url
+        videoPath: action.videoPath
       }
     default:
       return state
