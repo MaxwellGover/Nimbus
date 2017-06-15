@@ -91,8 +91,8 @@ class NimbusCamera extends Component {
                   this.props.dispatch(saveVideoDownloadURL(downloadURL));
                   console.log('Uploaded a blob or file!');
                 }).catch(error => console.log(error));
-              })
             })
+        })
 
       this.interval = setInterval(() => {
         const timer = this.state.timer
