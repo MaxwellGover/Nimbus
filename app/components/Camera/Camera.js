@@ -85,7 +85,7 @@ class NimbusCamera extends Component {
             .build(rnfbURI, { type : 'video/mov'})
             .then((blob) => {
               console.log(blob);
-              storageRef.child('video/' + '12345').put(blob, { contentType : 'video/mov' })
+              storageRef.child(`video/${12345.mov}`).put(blob, { contentType : 'video/mov' })
                 .then((snapshot) => {
                   const downloadURL = snapshot.downloadURL
                   this.props.dispatch(saveVideoDownloadURL(downloadURL));
