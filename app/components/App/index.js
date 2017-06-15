@@ -14,6 +14,7 @@ import { SongListContainer } from '~/components/SongList';
 import { CollectionContainer } from '~/components/Collection';
 import { FooterTabsContainer } from '~/components/FooterTabs';
 import { NimbusCamera } from '~/components/Camera';
+import { PreviewContainer } from '~/components/Preview';
 
 class App extends Component {
   static propTypes = {
@@ -98,6 +99,12 @@ class App extends Component {
             key="camera"
             component={NimbusCamera}
             title="Collection"
+            hideNavBar={true}
+          />
+          <Scene
+            key="preview"
+            component={PreviewContainer}
+            title="Preview"
             hideNavBar={true}
           />
         </Scene>

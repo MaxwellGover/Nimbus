@@ -19,6 +19,7 @@ export function saveVideoPath (videoPath) {
 };
 
 export function saveVideoDownloadURL (url) {
+  console.log(url)
   return {
     type: SAVE_VIDEO_DOWNLOAD_URL,
     url
@@ -27,11 +28,9 @@ export function saveVideoDownloadURL (url) {
 
 const initialState = {
   songDownloadURL: '',
-  videoPathOnDevice: ''
+  videoPathOnDevice: '',
   videoDownloadURL: ''
 };
-
-console.log(initialState);
 
 export default function preview (state = initialState, action) {
   switch (action.type) {
@@ -45,7 +44,7 @@ export default function preview (state = initialState, action) {
         ...state,
         videoPathOnDevice: action.videoPath
       }
-    case SAVE_VIDEO_PATH:
+    case SAVE_VIDEO_DOWNLOAD_URL:
       return {
         ...state,
         videoDownloadURL: action.url
