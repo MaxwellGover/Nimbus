@@ -4,7 +4,6 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Nimbus would like to access your device's camera</string>
-	<!-- Include this only if you are planning to use the microphone for video recording -->
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Nimbus would like to access your device's microphone</string>
 	<key>CFBundleDevelopmentRegion</key>

@@ -8,8 +8,23 @@ import {
   View
 } from 'react-native';
 import Camera from 'react-native-camera';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fbAuth, db, storageRef } from '~/config/firebase';
+import RNFetchBlob from 'react-native-fetch-blob'
+import { saveVideoPath, saveVideoDownloadURL } from '~/redux/modules/preview';
+
+const Blob = RNFetchBlob.polyfill.Blob;
+
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
 class NimbusCamera extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    songPath: PropTypes.string.isRequired,
+    videoPath: PropTypes.string.isRequired
+  }
   constructor(props) {
     super(props);
 
@@ -63,9 +78,21 @@ class NimbusCamera extends Component {
       this.camera.capture({mode: Camera.constants.CaptureMode.video})
         .then((data) => {
           console.log(data)
-          
-        })
-        .catch(err => console.error(err))
+          const video = data.path;
+          this.props.dispatch(saveVideoPath(video));
+          let rnfbURI = RNFetchBlob.wrap(video);
+          Blob
+            .build(rnfbURI, { type : 'video/mov'})
+            .then((blob) => {
+              console.log(blob);
+              storageRef.child('video/' + '12345').put(blob, { contentType : 'video/mov' })
+                .then((snapshot) => {
+                  const downloadURL = snapshot.downloadURL
+                  this.props.dispatch(saveVideoDownloadURL(downloadURL));
+                  console.log('Uploaded a blob or file!');
+                }).catch(error => console.log(error));
+              })
+            })
 
       this.interval = setInterval(() => {
         const timer = this.state.timer
@@ -73,12 +100,7 @@ class NimbusCamera extends Component {
           timer: timer - 1
         })
         if (timer === 0) {
-          window.clearInterval(this.interval);
           this.stopRecording();
-          this.setState({
-            isRecording: false,
-            timer: 10
-          })
           // Push to preview
         }
         console.log(timer)
@@ -88,7 +110,12 @@ class NimbusCamera extends Component {
 
   stopRecording = () => {
     if (this.camera) {
+      window.clearInterval(this.interval);
       this.camera.stopCapture();
+      this.setState({
+        isRecording: false,
+        timer: 10
+      })
     }
   }
 }
@@ -113,4 +140,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NimbusCamera;
+function mapStateToProps ({preview}) {
+  return {
+    songPath: preview.songPath,
+    videoPath: preview.videoPath
+  }
+}
+
+export default connect(mapStateToProps)(NimbusCamera);
