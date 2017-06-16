@@ -17,10 +17,10 @@ export function notAuthed () {
   }
 }
 
-export function isAuthed (uid) {
+export function isAuthed (userData) {
   return {
     type: IS_AUTHED,
-    uid
+    userData
   }
 }
 
@@ -38,8 +38,13 @@ export function loginUser (credentials) {
       // ...
     }).then(() => {
       const user = fbAuth.currentUser;
-      dispatch(isAuthed(user.uid));
-      Actions.home();
+      db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
+        dispatch(isAuthed({
+          displayName: snapshot.displayName.val(),
+          uid: user.uid,
+          profileImage: snapshot.profileImage.val()
+        }));
+      }).then(() => Actions.home())
     }).catch((error) => {
       console.warn('Error in createUser callback', error)
     });
@@ -76,7 +81,9 @@ export function createUser (userData) {
 
 const initialState = {
   isAuthed: false,
-  isAuthenticating: false
+  isAuthenticating: false,
+  uid: '',
+  profileImage: ''
 };
 
 export default function authentication (state = initialState, action) {
@@ -89,13 +96,18 @@ export default function authentication (state = initialState, action) {
     case NOT_AUTHED :
       return {
         isAuthenticating: false,
-        isAuthed: false
+        isAuthed: false,
+        uid: '',
+        displayName: '',
+        profileImage: ''
       }
       case IS_AUTHED :
         return {
           isAuthenticating: false,
           isAuthed: true,
-          uid: action.uid
+          uid: action.uid,
+          displayName: action.displayName,
+          profileImage: action.profileImage
         }
     default :
       return state

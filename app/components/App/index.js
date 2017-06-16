@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fbAuth } from '~/config/firebase';
+import { fbAuth, db } from '~/config/firebase';
 import { isAuthed, notAuthed } from '~/redux/modules/authentication';
 import { Login } from '~/scenes/Login';
 import { SignUp } from '~/scenes/SignUp';
@@ -35,9 +35,14 @@ class App extends Component {
   componentDidMount () {
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user.uid)
-        this.props.dispatch(isAuthed(user.uid))
-        Actions.home();
+        db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
+          console.log(snapshot.val().profileImage)
+          this.props.dispatch(isAuthed({
+            displayName: snapshot.val().displayName,
+            uid: user.uid,
+            profileImage: snapshot.val().profileImage
+          }));
+        }).then(() => Actions.home())
       } else {
         this.props.dispatch(notAuthed())
         Actions.splash();
@@ -77,9 +82,13 @@ class App extends Component {
             key="home"
             component={HomeContainer}
             title="Nimbus"
+            titleStyle={{color: '#fff'}}
             hideNavBar={false}
+            hideBackImage={true}
             onRight={this.signOut}
             rightTitle='Sign out'
+            rightButtonTextStyle={{color: '#fff'}}
+            navigationBarStyle={{backgroundColor: '#141414', borderBottom: 'none'}}
           />
           <Scene
             key="songList"
