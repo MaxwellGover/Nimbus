@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { Button } from 'native-base';
 import { NewReleasesContainer } from '~/components/NewReleases';
 import { FooterTabsContainer } from '~/components/FooterTabs';
+import { NoFollowers } from '~/components/NoFollowers';
 
 function Home (props) {
   return (
     <View style={styles.container}>
-      <NewReleasesContainer />
+      <NoFollowers />
       <FooterTabsContainer style={styles.footerTabs}/>
     </View>
   );

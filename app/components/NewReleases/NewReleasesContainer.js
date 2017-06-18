@@ -23,6 +23,7 @@ class NewReleasesContainer extends Component {
 }
 
 function mapStateToProps ({authentication}) {
+  console.log(authentication);
   return {
     following: authentication.following
   }

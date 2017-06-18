@@ -1,20 +1,43 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'native-base';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { db } from '~/config/firebase';
+import PropTypes from  'prop-types';
+import Video from 'react-native-video';
 
-function Preview (props) {
-  return (
-    <View>
-      <Button success block onPress={props.postPreview}>
-        <Text>Post Preview</Text>
-      </Button>
-    </View>
-  );
+class Preview extends Component {
+  static propTypes = {
+    uid: PropTypes.string.isRequired,
+    videoDownloadURL: PropTypes.string.isRequired
+  }
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      rate: 1,
+      volume: 1,
+      muted: false,
+      paused: false,
+      resizeMode: "cover",
+      repeat: true
+    }
+  }
+  render () {
+    return (
+      <Video
+        source={{uri: this.props.videoDownloadURL}}
+        rate={this.state.rate}
+        volume={this.state.volume}
+        muted={this.state.muted}
+        paused={this.state.paused}/>
+    );
+  }
 }
 
-PreviewPropTypes = {
-  postPreview: PropTypes.func.isRequired
+function mapStateToProps ({authentication, preview}) {
+  return {
+    uid: authentication.uid,
+    videoDownloadURL: preview.videoDownloadURL
+  }
 }
 
-export default Preview;
+export default connect(mapStateToProps)(Preview);

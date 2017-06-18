@@ -36,17 +36,9 @@ export function loginUser (credentials) {
       var errorCode = error.code;
       var errorMessage = error.message;
       // ...
-    }).then(() => {
-      const user = fbAuth.currentUser;
-      db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
-        dispatch(isAuthed({
-          displayName: snapshot.displayName.val(),
-          uid: user.uid,
-          profileImage: snapshot.profileImage.val(),
-          following: snapshot.following.val()
-        }));
-      }).then(() => Actions.home())
-    }).catch((error) => {
+    })
+    .then(() => Actions.home())
+    .catch((error) => {
       console.warn('Error in createUser callback', error)
     });
   }
@@ -74,8 +66,14 @@ export function createUser (userData) {
         following: 0
       })
 
-      dispatch(isAuthed(user.uid));
-      Actions.home()
+      db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
+        dispatch(isAuthed({
+          displayName: snapshot.displayName.val(),
+          uid: user.uid,
+          profileImage: snapshot.profileImage.val(),
+          following: snapshot.following.val()
+        }));
+      }).then(() => Actions.home())
     }).catch((error) => {
       console.warn('Error in createUser callback', error)
     });
@@ -107,13 +105,14 @@ export default function authentication (state = initialState, action) {
         following: 0
       }
       case IS_AUTHED :
+        console.log('action', action)
         return {
           isAuthenticating: false,
           isAuthed: true,
-          uid: action.uid,
-          displayName: action.displayName,
-          profileImage: action.profileImage,
-          following: action.following
+          uid: action.userData.uid,
+          displayName: action.userData.displayName,
+          profileImage: action.userData.profileImage,
+          following: action.userData.following
         }
     default :
       return state

@@ -53,6 +53,7 @@ class NimbusCamera extends Component {
           flashMode={this.state.flashMode}
           aspect={Camera.constants.Aspect.fill}
           captureAudio={true}
+          CaptureQuality={Camera.constants.CaptureQuality.medium}
           captureMode={Camera.constants.CaptureMode.video}
           captureTarget={Camera.constants.CaptureTarget.disk}
           keepAwake={true}>

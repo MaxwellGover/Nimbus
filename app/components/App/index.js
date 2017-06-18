@@ -14,7 +14,7 @@ import { SongListContainer } from '~/components/SongList';
 import { CollectionContainer } from '~/components/Collection';
 import { FooterTabsContainer } from '~/components/FooterTabs';
 import { NimbusCamera } from '~/components/Camera';
-import { PreviewContainer } from '~/components/Preview';
+import { Preview } from '~/components/Preview';
 
 class App extends Component {
   static propTypes = {
@@ -26,25 +26,33 @@ class App extends Component {
     fbAuth.signOut().then(() => {
       this.props.dispatch(notAuthed());
       Actions.splash();
-    }).catch(function(error) {
+    }).catch((error) => {
       console.warn(error);
       const user = fbAuth.currentUser;
-      this.props.dispatch(isAuthed(user.uid))
+      this.props.dispatch(isAuthed({
+        displayName: snapshot.val().displayName,
+        uid: user.uid,
+        profileImage: snapshot.val().profileImage,
+        following: snapshot.val().following
+      }))
     });
   }
   componentDidMount () {
     // Actions.signUp();
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
+        console.log('component did mount', user)
         db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
-          console.log(snapshot.val().following)
+          console.log('Component mounting', snapshot.val())
           this.props.dispatch(isAuthed({
             displayName: snapshot.val().displayName,
             uid: user.uid,
             profileImage: snapshot.val().profileImage,
             following: snapshot.val().following
           }));
-        }).then(() => Actions.home())
+        })
+        .then(() => Actions.home())
+        .catch((error) => console.warn(error))
       } else {
         this.props.dispatch(notAuthed())
         Actions.splash();
@@ -115,7 +123,7 @@ class App extends Component {
           />
           <Scene
             key="preview"
-            component={PreviewContainer}
+            component={Preview}
             title="Preview"
             hideNavBar={true}
           />
