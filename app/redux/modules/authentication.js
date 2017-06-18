@@ -31,7 +31,7 @@ export function loginUser (credentials) {
     const email = credentials.email;
     const password = credentials.password;
 
-    fbAuth.signInWithEmailAndPassword(email, password).catch(function(error) {
+    fbAuth.signInWithEmailAndPassword(email, password).catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -42,7 +42,8 @@ export function loginUser (credentials) {
         dispatch(isAuthed({
           displayName: snapshot.displayName.val(),
           uid: user.uid,
-          profileImage: snapshot.profileImage.val()
+          profileImage: snapshot.profileImage.val(),
+          following: snapshot.following.val()
         }));
       }).then(() => Actions.home())
     }).catch((error) => {
@@ -68,7 +69,9 @@ export function createUser (userData) {
       db.ref('/users/' + user.uid).set({
         username: userData.username,
         displayName: userData.displayName,
-        uid: user.uid
+        uid: user.uid,
+        profileImage: '',
+        following: 0
       })
 
       dispatch(isAuthed(user.uid));
@@ -83,7 +86,8 @@ const initialState = {
   isAuthed: false,
   isAuthenticating: false,
   uid: '',
-  profileImage: ''
+  profileImage: '',
+  following: 0
 };
 
 export default function authentication (state = initialState, action) {
@@ -99,7 +103,8 @@ export default function authentication (state = initialState, action) {
         isAuthed: false,
         uid: '',
         displayName: '',
-        profileImage: ''
+        profileImage: '',
+        following: 0
       }
       case IS_AUTHED :
         return {
@@ -107,7 +112,8 @@ export default function authentication (state = initialState, action) {
           isAuthed: true,
           uid: action.uid,
           displayName: action.displayName,
-          profileImage: action.profileImage
+          profileImage: action.profileImage,
+          following: action.following
         }
     default :
       return state

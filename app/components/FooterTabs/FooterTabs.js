@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 
 function FooterTabs (props) {
   return (
-    <Footer style={{backgroundColor: '#141414'}}>
+    <Footer style={{backgroundColor: '#141414', borderTopColor: '#141414'}}>
       <FooterTab>
         <Button
           onPress={() => {

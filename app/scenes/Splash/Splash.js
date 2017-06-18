@@ -1,30 +1,24 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { Button } from 'native-base';
 import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
+import { Login } from '~/scenes/Login';
+import styles from './styles';
 
 const Splash = (props) => {
   return (
     <View style={styles.container}>
-      <Button light block onPress={Actions.login}>
-        <Text>Login</Text>
-      </Button>
-      <Button dark block bordered style={{marginTop: 10}} onPress={Actions.signUp}>
-        <Text>Register</Text>
-      </Button>
+      <View style={styles.top}>
+        <Image style={{resizeMode: 'contain', height: 80}} source={require('../../images/logo.png')}/>
+      </View>
+      <View style={styles.bottom}>
+        <Login />
+      </View>
     </View>
   );
 }
 
-Splash.propTypes = {};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center'
-  }
-});
+SplashPropTypes = {};
 
 export default Splash;

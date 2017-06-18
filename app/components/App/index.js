@@ -33,14 +33,16 @@ class App extends Component {
     });
   }
   componentDidMount () {
+    // Actions.signUp();
     fbAuth.onAuthStateChanged((user) => {
       if (user) {
         db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
-          console.log(snapshot.val().profileImage)
+          console.log(snapshot.val().following)
           this.props.dispatch(isAuthed({
             displayName: snapshot.val().displayName,
             uid: user.uid,
-            profileImage: snapshot.val().profileImage
+            profileImage: snapshot.val().profileImage,
+            following: snapshot.val().following
           }));
         }).then(() => Actions.home())
       } else {
@@ -54,7 +56,7 @@ class App extends Component {
       <Router>
         <Scene key="root">
           <Scene
-            key="pre"
+            key="preSplash"
             component={PreSplash}
             title="Pre Splash"
             hideNavBar={true}
@@ -82,13 +84,14 @@ class App extends Component {
             key="home"
             component={HomeContainer}
             title="Nimbus"
-            titleStyle={{color: '#fff'}}
+            navigationBarTitleImage={require('../../images.logo.png')}
+            navigationBarTitleImageStyle={{resizeMode: 'contain', height: 27}}
             hideNavBar={false}
             hideBackImage={true}
             onRight={this.signOut}
             rightTitle='Sign out'
             rightButtonTextStyle={{color: '#fff'}}
-            navigationBarStyle={{backgroundColor: '#141414', borderBottom: 'none'}}
+            navigationBarStyle={{backgroundColor: '#141414', borderBottomColor: '#141414'}}
           />
           <Scene
             key="songList"

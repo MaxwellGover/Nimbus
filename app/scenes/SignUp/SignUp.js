@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   Text,
-  View
+  View,
+  Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  Item,
-  Input,
-  Button
-} from 'native-base';
+import { FormLabel, FormInput, Button, Icon } from 'react-native-elements'
 import { createUser } from '~/redux/modules/authentication';
+import styles from './styles';
 
 class SignUp extends Component {
   static propTypes = {
@@ -34,79 +31,112 @@ class SignUp extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <View style={styles.helpTextWrapper}>
-          <Text>Sign up</Text>
+        <View style={styles.logoWrapper}>
+          <Image
+            style={{resizeMode: 'contain', height: 80}}
+            source={require('../../images/logo.png')}/>
+          <Text style={styles.createAccountText}>Create a free account</Text>
         </View>
         <View>
-          <Item>
-            <Input
+          <View style={styles.formInputWrapper}>
+            <Icon
+              iconStyle={{marginTop: -10, marginLeft: 20}}
+              name='ios-contact-outline'
+              type='ionicon'
+              color='#fff'
+            />
+          <View style={styles.inputWrapper}>
+            <FormLabel labelStyle={styles.label}>Username</FormLabel>
+            <FormInput
+              inputStyle={styles.input}
               placeholder="Pick a username"
               onChangeText={(username) => this.setState({username})}
               autoCapitalize={'none'}
               autoCorrect={false}
             />
-          </Item>
-          <Item>
-            <Input
-              placeholder="Choose a display name"
-              onChangeText={(displayName) => this.setState({displayName})}
-              autoCapitalize={'none'}
-              autoCorrect={false}
+            </View>
+          </View>
+          <View style={styles.formInputWrapper}>
+            <Icon
+              iconStyle={{marginTop: -10, marginLeft: 20}}
+              name='ios-contact-outline'
+              type='ionicon'
+              color='#fff'
             />
-          </Item>
-          <Item>
-            <Input
-              placeholder="Enter an email address"
-              onChangeText={(email) => this.setState({email})}
-              autoCapitalize={'none'}
-              autoCorrect={false}
+            <View style={styles.inputWrapper}>
+              <FormLabel labelStyle={styles.label}>Display Name</FormLabel>
+              <FormInput
+                inputStyle={styles.input}
+                placeholder="Choose a display name"
+                onChangeText={(displayName) => this.setState({displayName})}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+              />
+            </View>
+          </View>
+          <View style={styles.formInputWrapper}>
+            <Icon
+              iconStyle={{marginTop: -15, marginLeft: 20}}
+              name='ios-mail-outline'
+              type='ionicon'
+              color='#fff'
             />
-          </Item>
-          <Item>
-            <Input
-              placeholder="Password"
-              secureTextEntry={true}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(password) => this.setState({password})}/>
-          </Item>
-          <Item>
-            <Input
-              placeholder="Confirm your password"
-              secureTextEntry={true}
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(confirmPasswordText) => {
-                this.setState({confirmPasswordText})}
-              }
+            <View style={styles.inputWrapper}>
+              <FormLabel labelStyle={styles.label}>Email</FormLabel>
+              <FormInput
+                inputStyle={styles.input}
+                placeholder="Enter an email address"
+                onChangeText={(email) => this.setState({email})}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+              />
+            </View>
+          </View>
+          <View style={styles.formInputWrapper}>
+            <Icon
+              iconStyle={{marginTop: -10, marginLeft: 20}}
+              name='ios-lock-outline'
+              type='ionicon'
+              color='#fff'
             />
-          </Item>
+            <View style={styles.inputWrapper}>
+              <FormLabel labelStyle={styles.label}>Password</FormLabel>
+              <FormInput
+                inputStyle={styles.input}
+                placeholder="Password"
+                secureTextEntry={true}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={(password) => this.setState({password})}
+              />
+            </View>
+          </View>
+          <View style={styles.formInputWrapper}>
+            <Icon
+              iconStyle={{marginTop: -10, marginLeft: 20}}
+              name='ios-lock-outline'
+              type='ionicon'
+              color='#fff'
+            />
+            <View style={styles.inputWrapper}>
+              <FormLabel labelStyle={styles.label}>Confirm Password</FormLabel>
+              <FormInput
+                inputStyle={styles.input}
+                placeholder="Confirm your password"
+                secureTextEntry={true}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                onChangeText={(confirmPasswordText) => {
+                  this.setState({confirmPasswordText})}
+                }
+              />
+            </View>
+          </View>
         </View>
-        <View style={styles.buttonWrapper}>
-          <Button block onPress={this.handleSubmit}>
-            <Text>
-              Sign Up
-            </Text>
-          </Button>
-        </View>
+        <Button title="SIGN UP" buttonStyle={styles.button} onPress={this.handleSubmit}/>
       </View>
     );
   }
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    marginTop: 80,
-    padding: 10
-  },
-  buttonWrapper: {
-    marginTop: 50
-  },
-  helpTextWrapper: {
-    alignItems: 'center'
-  }
-});
 
 export default connect()(SignUp);

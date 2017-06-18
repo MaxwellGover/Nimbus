@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button } from 'native-base';
 import { NewReleasesContainer } from '~/components/NewReleases';
@@ -21,7 +21,7 @@ HomePropTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 70
+    marginTop: 68
   }
 });
 

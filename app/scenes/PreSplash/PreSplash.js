@@ -1,18 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import styles from './styles';
 
 const PreSplash = () => {
   return (
     <View style={styles.container}>
-      <Text>PreSplash!!!</Text>
+      <Image style={{resizeMode: 'contain', height: 80}} source={require('../../images/logo.png')}/>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 60
-  }
-});
 
 export default PreSplash;
