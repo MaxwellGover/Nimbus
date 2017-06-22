@@ -10,15 +10,8 @@ import {
 import Camera from 'react-native-camera';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fbAuth, db, storageRef } from '~/config/firebase';
-import RNFetchBlob from 'react-native-fetch-blob';
 import { Actions } from 'react-native-router-flux';
-import { saveVideoPath, saveVideoDownloadURL } from '~/redux/modules/preview';
-
-const Blob = RNFetchBlob.polyfill.Blob;
-
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-window.Blob = Blob
+import { saveVideoPath } from '~/redux/modules/preview';
 
 class NimbusCamera extends Component {
   static propTypes = {
@@ -80,20 +73,7 @@ class NimbusCamera extends Component {
           console.log(data)
           const video = data.path;
           this.props.dispatch(saveVideoPath(video));
-          let rnfbURI = RNFetchBlob.wrap(video);
-          Blob
-            .build(rnfbURI, { type : 'video/mov'})
-            .then((blob) => {
-              console.log(blob);
-              storageRef.child('video/' + '12345.mov').put(blob, { contentType : 'video/mov' })
-                .then((snapshot) => {
-                  const downloadURL = snapshot.downloadURL
-                  console.log(downloadURL)
-                  this.props.dispatch(saveVideoDownloadURL(downloadURL));
-                  console.log('Uploaded a blob or file!');
-                  Actions.preview();
-                }).catch(error => console.log(error));
-            })
+          Actions.preview();
         })
 
       this.interval = setInterval(() => {

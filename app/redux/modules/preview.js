@@ -1,6 +1,7 @@
 const SAVE_SONG_PATH = 'SAVE_SONG_PATH';
 const SAVE_VIDEO_PATH = 'SAVE_VIDEO_PATH';
 const SAVE_VIDEO_DOWNLOAD_URL = 'SAVE_VIDEO_DOWNLOAD_URL';
+const REMOVE_VIDEO_PATH = 'REMOVE_VIDEO_PATH';
 
 export function saveSongPath (songPath) {
   console.log(songPath);
@@ -17,6 +18,12 @@ export function saveVideoPath (videoPath) {
     videoPath
   }
 };
+
+export function removeVideoPath () {
+  return {
+    type: REMOVE_VIDEO_PATH
+  }
+}
 
 export function saveVideoDownloadURL (url) {
   console.log(url)
@@ -48,6 +55,11 @@ export default function preview (state = initialState, action) {
       return {
         ...state,
         videoDownloadURL: action.url
+      }
+    case REMOVE_VIDEO_PATH:
+      return {
+        ...state,
+        videoPathOnDevice: ''
       }
     default:
       return state
