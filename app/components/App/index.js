@@ -15,6 +15,7 @@ import { CollectionContainer } from '~/components/Collection';
 import { FooterTabsContainer } from '~/components/FooterTabs';
 import { NimbusCamera } from '~/components/Camera';
 import { Preview } from '~/components/Preview';
+import { storeAvailablePreview } from '~/redux/modules/availablePreview';
 
 class App extends Component {
   static propTypes = {
@@ -31,6 +32,7 @@ class App extends Component {
       const user = fbAuth.currentUser;
       this.props.dispatch(isAuthed({
         displayName: snapshot.val().displayName,
+        username: snapshot.val().username,
         uid: user.uid,
         profileImage: snapshot.val().profileImage,
         following: snapshot.val().following
@@ -44,12 +46,14 @@ class App extends Component {
         console.log('component did mount', user)
         db.ref(`users/${user.uid}/`).once('value', (snapshot) => {
           console.log('Component mounting', snapshot.val())
+          console.log(snapshot.val().displayName);
           this.props.dispatch(isAuthed({
             displayName: snapshot.val().displayName,
             uid: user.uid,
             profileImage: snapshot.val().profileImage,
             following: snapshot.val().following
           }));
+          this.props.dispatch(storeAvailablePreview(snapshot.val().currentPreview));
         })
         .then(() => Actions.home())
         .catch((error) => console.warn(error))

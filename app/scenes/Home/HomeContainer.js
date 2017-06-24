@@ -9,13 +9,38 @@ import Home from './Home';
 
 class HomeContainer extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    availablePreview: PropTypes.object.isRequired
+  }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      has_active_preview: false
+    }
+  }
+  componentDidMount = () => {
+    if (
+      this.props.availablePreview.song
+      && this.props.availablePreview.video !== 0
+    ) {
+      this.setState({
+        has_active_preview: true
+      })
+    }
   }
   render () {
     return (
-      <Home />
+      <Home has_active_preview={this.state.has_active_preview}/>
     );
   }
 }
 
-export default connect()(HomeContainer);
+function mapStateToProps ({ availablePreview }) {
+  console.log(availablePreview);
+  return {
+    availablePreview: availablePreview
+  }
+}
+
+export default connect(mapStateToProps)(HomeContainer);

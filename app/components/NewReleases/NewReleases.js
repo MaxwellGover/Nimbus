@@ -2,17 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, SectionList, Text, View, StyleSheet } from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
+import { MyActivePreview } from '~/components/MyActivePreview';
 
 function NewReleases (props) {
-  console.log(props.following);
-  if (props.following === 0) {
-    return <Text>You are not following anyone</Text>
-  } else {
   return (
     <ScrollView style={styles.list}>
+
     </ScrollView>
   );
-  }
 }
 
 NewReleasesPropTypes = {

@@ -45,7 +45,16 @@ class Preview extends Component {
             console.log(downloadURL)
             db.ref(`users/${this.props.uid}/currentPreview/`).set({
               song: this.props.songDownloadURL,
-              video: downloadURL
+              video: downloadURL,
+              details: {
+                total_times_viewed: 0,
+                total_times_purchased: 0,
+                views_remaining: 3,
+                amount_made: 0,
+                likes: 0,
+                dislikes: 0,
+                feedback: []
+              }
             })
           }).catch(error => console.log(error));
       })

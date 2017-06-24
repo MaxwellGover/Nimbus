@@ -11,19 +11,14 @@ class NewReleasesContainer extends Component {
   constructor (props) {
     super(props);
   }
-  componentDidMount = () => {
-
-  }
   render () {
-    console.log(this.props.following)
     return (
       <NewReleases following={this.props.following}/>
     );
   }
 }
 
-function mapStateToProps ({authentication}) {
-  console.log(authentication);
+function mapStateToProps ({ authentication }) {
   return {
     following: authentication.following
   }

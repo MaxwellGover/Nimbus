@@ -70,6 +70,7 @@ export function createUser (userData) {
         dispatch(isAuthed({
           displayName: snapshot.displayName.val(),
           uid: user.uid,
+          username: snapshot.username.val(),
           profileImage: snapshot.profileImage.val(),
           following: snapshot.following.val()
         }));
@@ -85,6 +86,7 @@ const initialState = {
   isAuthenticating: false,
   uid: '',
   profileImage: '',
+  displayName: '',
   following: 0
 };
 
@@ -105,7 +107,7 @@ export default function authentication (state = initialState, action) {
         following: 0
       }
       case IS_AUTHED :
-        console.log('action', action)
+        console.log('is_authed', action)
         return {
           isAuthenticating: false,
           isAuthed: true,
