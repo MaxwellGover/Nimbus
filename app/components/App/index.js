@@ -15,6 +15,7 @@ import { CollectionContainer } from '~/components/Collection';
 import { FooterTabsContainer } from '~/components/FooterTabs';
 import { NimbusCamera } from '~/components/Camera';
 import { Preview } from '~/components/Preview';
+import { HFVideoContainer } from '~/components/HFVideo';
 import { storeAvailablePreview } from '~/redux/modules/availablePreview';
 
 class App extends Component {
@@ -129,6 +130,12 @@ class App extends Component {
             key="preview"
             component={Preview}
             title="Preview"
+            hideNavBar={true}
+          />
+          <Scene
+            key="video"
+            component={HFVideoContainer}
+            title="Video"
             hideNavBar={true}
           />
         </Scene>
